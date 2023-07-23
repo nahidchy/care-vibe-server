@@ -47,6 +47,20 @@ async function run() {
       const reviews = await reviewCollections.find(query).toArray();
       res.send(reviews)
     })
+    app.get('/myReviews/:id', async (req, res) => {
+      const uid = req.params.id;
+      console.log(uid)
+      const query = {uid: uid};
+      const reviews = await reviewCollections.find(query).toArray();
+      res.send(reviews)
+    })
+    app.delete('/myReviews/:id', async (req, res) => {
+     const id=req.params.id;
+     const query ={_id: new ObjectId(id)};
+     const result=await reviewCollections.deleteOne(query);
+     res.send(result)
+     console.log(id)
+    })
 
     app.patch('/reviews/:id',async(req,res)=>{
       const id = req.params.id;
@@ -62,15 +76,14 @@ async function run() {
       const result= await reviewCollections.updateOne(query,updateReview,option);
       res.send(result)
     })
-    app.delete('/reviews/:id',async(req,res)=>{
-      const id= req.params.id;
-      const query={_id: new ObjectId(id)};
-      const result = await reviewCollections.deleteOne(query);
-      res.send(result)
-    })
     app.post('/reviews', async (req, res) => {
       const review = req.body;
       const result = await reviewCollections.insertOne(review);
+      res.send(result)
+    })
+    app.post('/services', async (req, res) => {
+      const service = req.body;
+      const result = await serviceCollections.insertOne(service);
       res.send(result)
     })
 
